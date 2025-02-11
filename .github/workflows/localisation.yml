@@ -1,5 +1,8 @@
 name: Localization Workflow
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -97,12 +100,14 @@ jobs:
           done
 
       - name: Commit and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add languages/*.po languages/*.mo
           git commit -m 'Update translations' || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
 
       - name: Clean up Node Modules
         run: rm -rf node_modules

@@ -48,9 +48,9 @@ jobs:
       - name: Create Translation Script
         run: |
           cat << 'EOF' > fill_missing_translations.js
-          const fs = require('fs');
-          const axios = require('axios');
-          const gettextParser = require('gettext-parser');
+          import fs from 'fs';
+          import axios from 'axios';
+          import gettextParser from 'gettext-parser';
 
           const languages = ['fr_FR', 'es_ES', 'de_DE'];
           const potFile = fs.readFileSync('languages/my-react-localization-plugin.pot');
@@ -87,7 +87,7 @@ jobs:
 
       - name: Identify and Fill Missing Translations
         run: |
-          node fill_missing_translations.js
+          node --input-type=module fill_missing_translations.js
 
       - name: Compile .po to .mo Files
         run: |

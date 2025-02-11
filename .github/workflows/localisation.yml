@@ -30,6 +30,9 @@ jobs:
       - name: Install Axios for API requests
         run: npm install axios
 
+      - name: Install Gettext Parser
+        run: gettext-parser
+
       - name: Extract Translatable Strings
         run: wp i18n make-pot . languages/my-react-localization-plugin.pot
 

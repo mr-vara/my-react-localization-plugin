@@ -54,7 +54,7 @@ jobs:
           const pot = gettextParser.po.parse(potFile);
 
           languages.forEach(async (lang) => {
-            const poPath = \`languages/my-react-localization-plugin-\${lang}.po\`;
+            const poPath = `languages/my-react-localization-plugin-${lang}.po`;
             let poFile = fs.readFileSync(poPath);
             let po = gettextParser.po.parse(poFile);
 
@@ -72,7 +72,7 @@ jobs:
                   po.translations[''][msgid] = po.translations[''][msgid] || { msgid: msgid, msgstr: [''] };
                   po.translations[''][msgid].msgstr[0] = response.data.translatedText;
                 } catch (error) {
-                  console.error(\`Translation failed for \${msgid}:\`, error.message);
+                  console.error(`Translation failed for ${msgid}:`, error.message);
                 }
               }
             }

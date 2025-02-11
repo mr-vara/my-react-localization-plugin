@@ -47,7 +47,7 @@ jobs:
 
       - name: Create Translation Script
         run: |
-          cat << 'EOF' > fill_missing_translations.js
+          cat << 'EOF' > fill_missing_translations.mjs
           import fs from 'fs';
           import axios from 'axios';
           import gettextParser from 'gettext-parser';
@@ -87,7 +87,7 @@ jobs:
 
       - name: Identify and Fill Missing Translations
         run: |
-          node --input-type=module fill_missing_translations.js
+          node fill_missing_translations.mjs
 
       - name: Compile .po to .mo Files
         run: |

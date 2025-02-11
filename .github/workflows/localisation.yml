@@ -1,0 +1,65 @@
+name: Localization Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install WP-CLI
+        run: |
+          curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          chmod +x wp-cli.phar
+          sudo mv wp-cli.phar /usr/local/bin/wp
+
+      - name: Install gettext utilities
+        run: sudo apt-get update && sudo apt-get install -y gettext
+
+      - name: Install Axios for API requests
+        run: npm install axios
+
+      - name: Extract Translatable Strings
+        run: wp i18n make-pot . languages/my-react-localization-plugin.pot
+
+      - name: Ensure .po Files Exist
+        run: |
+          LANGUAGES=(fr_FR es_ES de_DE)
+          for LANG in "${LANGUAGES[@]}"; do
+            if [ ! -f languages/my-react-localization-plugin-$LANG.po ]; then
+              msginit --input=languages/my-react-localization-plugin.pot --locale=$LANG --output-file=languages/my-react-localization-plugin-$LANG.po --no-translator
+            fi
+          done
+
+      - name: Identify and Fill Missing Translations
+        run: |
+          node fill_missing_translations.js
+
+      - name: Compile .po to .mo Files
+        run: |
+          for PO_FILE in languages/*.po; do
+            MO_FILE="${PO_FILE%.po}.mo"
+            msgfmt "$PO_FILE" --output-file="$MO_FILE"
+          done
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add languages/*.po languages/*.mo
+          git commit -m 'Update translations' || echo "No changes to commit"
+          git push
+
+      - name: Clean up Node Modules
+        run: rm -rf node_modules

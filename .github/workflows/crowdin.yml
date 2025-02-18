@@ -4,6 +4,11 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+name: Crowdin Action
+
+permissions:
+  contents: write        # Allows the workflow to write to repository contents (e.g., push changes)
+  pull-requests: write   # Allows the workflow to create and manage pull requests
 
 jobs:
   synchronize-with-crowdin:

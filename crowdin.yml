@@ -10,8 +10,8 @@
     "translation": "/languages/my-react-localization-plugin-%locale%.po",
       "languages_mapping": {
          "locale": {
-            "de_DE": "de",
-            "fr_FR": "fr"
+            "de": "de_DE",
+            "fr": "fr_FR"
          }
       }
   }

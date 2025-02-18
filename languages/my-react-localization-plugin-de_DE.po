@@ -45,3 +45,8 @@ msgstr ""
 #: my-react-localization-plugin.php:67
 msgid "This is a static message from React frontend!"
 msgstr ""
+
+#: react-src/src/App.js:167
+#: react-src/build/static/js/main.3131ee22.js:18677
+msgid "Hello Again"
+msgstr ""

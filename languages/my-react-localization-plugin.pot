@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-10T16:20:22+00:00\n"
+"POT-Creation-Date: 2025-02-15T16:20:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: my-react-localization-plugin\n"
@@ -44,4 +44,9 @@ msgstr ""
 #: react-src/src/App.js:16
 #: react-src/build/static/js/main.3131ee22.js:18670
 msgid "Hello"
+msgstr ""
+
+#: react-src/src/App.js:167
+#: react-src/build/static/js/main.3131ee22.js:18677
+msgid "Hello Again"
 msgstr ""

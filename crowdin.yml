@@ -7,6 +7,6 @@
 "files": [
   {
     "source": "languages/my-react-localization-plugin.pot",
-    "translation": "languages/*.po"
+    "translation": "languages/my-react-localization-plugin-%locale%.po"
   }
 ]

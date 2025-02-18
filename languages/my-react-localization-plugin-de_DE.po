@@ -1,10 +1,7 @@
-# Copyright (C) 2025 Your Name
-# This file is distributed under the same license as the My React Localization Plugin plugin.
 msgid ""
 msgstr ""
 "Project-Id-Version: My React Localization Plugin 1.0\n"
-"Report-Msgid-Bugs-To: "
-"https://wordpress.org/support/plugin/my-react-localization-plugin\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/my-react-localization-plugin\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -12,25 +9,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2025-02-11T13:31:26+00:00\n"
 "PO-Revision-Date: 2025-02-11T13:31:26+00:00\n"
+"Language: de\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: my-react-localization-plugin\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: my-react-localization-plugin.php
 #. Plugin Name of the plugin
+#: my-react-localization-plugin.php
 msgid "My React Localization Plugin"
 msgstr ""
 
-#: my-react-localization-plugin.php
 #. Description of the plugin
-msgid ""
-"A simple WordPress plugin demonstrating React frontend with PHP backend and "
-"localization."
+#: my-react-localization-plugin.php
+msgid "A simple WordPress plugin demonstrating React frontend with PHP backend and localization."
 msgstr ""
 
-#: my-react-localization-plugin.php
 #. Author of the plugin
+#: my-react-localization-plugin.php
 msgid "Your Name"
 msgstr ""
 
@@ -46,12 +41,16 @@ msgstr ""
 msgid "This is a static message from React frontend!"
 msgstr ""
 
-#: react-src/src/App.js:167
-#: react-src/build/static/js/main.3131ee22.js:18677
+#: my-react-localization-plugin.php:68
 msgid "Hello Again"
 msgstr ""
 
-#: react-src/src/App.js:168
-#: react-src/build/static/js/main.3131ee22.js:18678
+#: my-react-localization-plugin.php:69
 msgid "Hello Again and Again"
-msgstr "
+msgstr ""
+
+#: react-src/build/static/js/main.c937dffe.js:2
+#: react-src/src/App.js:16
+#: react-src/build/static/js/main.c937dffe.js:18670
+msgid "Hello"
+msgstr ""

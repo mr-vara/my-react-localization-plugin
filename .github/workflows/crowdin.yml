@@ -26,7 +26,7 @@ jobs:
           pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
           pull_request_base_branch_name: 'main'
           source: "languages/my-react-localisation-plugin.pot"  # Path to your POT file
-          translation: "languages/*.po"  # Path to existing translations
+          translation: ["languages/%de_DE%", "languages/%fr_FR%"]  # Path to existing translations
         env:
           # A classic GitHub Personal Access Token with the 'repo' scope selected (the user should have write access to the repository).
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

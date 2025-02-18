@@ -7,6 +7,12 @@
 "files": [
   {
     "source": "/languages/my-react-localization-plugin.pot",
-    "translation": "/languages/my-react-localization-plugin-%locale%.po"
+    "translation": "/languages/my-react-localization-plugin-%locale%.po",
+      "languages_mapping": {
+         "locale": {
+            "de_DE": "de",
+            "fr_FR": "fr"
+         }
+      }
   }
 ]

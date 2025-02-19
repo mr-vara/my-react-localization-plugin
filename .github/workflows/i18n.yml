@@ -1,0 +1,35 @@
+name: Generate i18n Files
+
+on:
+  workflow_dispatch:
+
+jobs:
+  i18n:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1' # Adjust according to your project needs
+          tools: composer
+          extensions: mbstring, intl
+
+      - name: Install dependencies
+        run: composer install --no-dev --prefer-dist --no-progress --no-scripts
+
+      - name: Generate i18n files
+        run: composer run i18n
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add languages/
+          git diff --cached --quiet || git commit -m "Update i18n files"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

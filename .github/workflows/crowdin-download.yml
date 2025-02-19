@@ -20,17 +20,16 @@ jobs:
       - name: crowdin action
         uses: crowdin/github-action@v2
         with:
-          upload_sources: true
-          upload_translations: true
-          download_translations: false
-          # localization_branch_name: l10n_crowdin_translations
-          # create_pull_request: true
-          # auto_approve_imported: true
-          # pull_request_title: 'New Crowdin Translations'
-          # pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
-          # pull_request_base_branch_name: 'main'
-          # source: "languages/my-react-localization-plugin.pot"  # Path to your POT file
-          # translation: "languages/my-react-localization-plugin-%locale%.po"
+          upload_sources: false
+          upload_translations: false
+          download_translations: true
+          localization_branch_name: l10n_crowdin_translations
+          create_pull_request: true
+          auto_approve_imported: true
+          pull_request_title: 'New Crowdin Translations'
+          pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
+          pull_request_base_branch_name: 'main'
+
         env:
           # A classic GitHub Personal Access Token with the 'repo' scope selected (the user should have write access to the repository).
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

@@ -1,78 +1,78 @@
-name: Crowdin Action
+# name: Crowdin Action
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+# on:
+#   push:
+#     branches: [ main ]
+#   workflow_dispatch:
 
-permissions:
-  contents: write        
-  pull-requests: write   
+# permissions:
+#   contents: write        
+#   pull-requests: write   
  
-jobs:
-  synchronize-with-crowdin:
-    runs-on: ubuntu-latest
+# jobs:
+#   synchronize-with-crowdin:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      - name: crowdin action
-        uses: crowdin/github-action@v2
-        with:
-          upload_sources: false
-          upload_translations: false
-          download_translations: true
-          localization_branch_name: l10n_crowdin_translations
-          create_pull_request: true
-          auto_approve_imported: true
-          pull_request_title: 'New Crowdin Translations'
-          pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
-          pull_request_base_branch_name: 'main'
+#       - name: crowdin action
+#         uses: crowdin/github-action@v2
+#         with:
+#           upload_sources: false
+#           upload_translations: false
+#           download_translations: true
+#           localization_branch_name: l10n_crowdin_translations
+#           create_pull_request: true
+#           auto_approve_imported: true
+#           pull_request_title: 'New Crowdin Translations'
+#           pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
+#           pull_request_base_branch_name: 'main'
 
-        env:
-          # A classic GitHub Personal Access Token with the 'repo' scope selected (the user should have write access to the repository).
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+#         env:
+#           # A classic GitHub Personal Access Token with the 'repo' scope selected (the user should have write access to the repository).
+#           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           
-          # A numeric ID, found at https://crowdin.com/project/<projectName>/tools/api
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+#           # A numeric ID, found at https://crowdin.com/project/<projectName>/tools/api
+#           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
 
-          # Visit https://crowdin.com/settings#api-key to create this token
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+#           # Visit https://crowdin.com/settings#api-key to create this token
+#           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-  update-i18n:
-    runs-on: ubuntu-latest
-    needs: synchronize-with-crowdin
-    if: github.ref == 'refs/heads/l10n_crowdin_translations' # Ensure this runs only in the Crowdin branch
+#   update-i18n:
+#     runs-on: ubuntu-latest
+#     needs: synchronize-with-crowdin
+#     if: github.ref == 'refs/heads/l10n_crowdin_translations' # Ensure this runs only in the Crowdin branch
 
-    steps:
-      - name: Checkout l10n_crowdin_translations branch
-        uses: actions/checkout@v4
-        with:
-          ref: l10n_crowdin_translations # Ensure we are on the correct branch
+#     steps:
+#       - name: Checkout l10n_crowdin_translations branch
+#         uses: actions/checkout@v4
+#         with:
+#           ref: l10n_crowdin_translations # Ensure we are on the correct branch
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1' # Adjust as needed
-          tools: composer
-          extensions: mbstring, intl
+#       - name: Set up PHP
+#         uses: shivammathur/setup-php@v2
+#         with:
+#           php-version: '8.1' # Adjust as needed
+#           tools: composer
+#           extensions: mbstring, intl
 
-      - name: Install dependencies
-        run: composer install --no-dev --prefer-dist --no-progress --no-scripts
+#       - name: Install dependencies
+#         run: composer install --no-dev --prefer-dist --no-progress --no-scripts
 
-      - name: Generate .mo files
-        run: composer run i18n-mo
+#       - name: Generate .mo files
+#         run: composer run i18n-mo
 
-      - name: Generate .json translation files
-        run: composer run i18n-json
+#       - name: Generate .json translation files
+#         run: composer run i18n-json
 
-      - name: Commit changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add languages/
-          git diff --cached --quiet || git commit -m "Update translation files after Crowdin sync"
-          git push origin l10n_crowdin_translations
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+#       - name: Commit changes
+#         run: |
+#           git config --global user.name "github-actions[bot]"
+#           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+#           git add languages/
+#           git diff --cached --quiet || git commit -m "Update translation files after Crowdin sync"
+#           git push origin l10n_crowdin_translations
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

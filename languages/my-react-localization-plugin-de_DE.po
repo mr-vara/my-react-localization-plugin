@@ -1,56 +1,60 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: My React Localization Plugin 1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/my-react-localization-plugin\n"
+"POT-Creation-Date: 2025-02-11T13:31:26+00:00\n"
+"PO-Revision-Date: 2025-02-11T13:31:26+00:00\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-11T13:31:26+00:00\n"
-"PO-Revision-Date: 2025-02-11T13:31:26+00:00\n"
-"Language: de\n"
-"X-Generator: WP-CLI 2.11.0\n"
-"X-Domain: my-react-localization-plugin\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: my-react-localization-plugin\n"
+"X-Generator: WP-CLI 2.11.0\n"
 
 #. Plugin Name of the plugin
 #: my-react-localization-plugin.php
 msgid "My React Localization Plugin"
-msgstr ""
+msgstr "Mein React-Lokalisierungs-Plugin"
 
 #. Description of the plugin
 #: my-react-localization-plugin.php
-msgid "A simple WordPress plugin demonstrating React frontend with PHP backend and localization."
+msgid ""
+"A simple WordPress plugin demonstrating React frontend with PHP backend and "
+"localization."
 msgstr ""
+"Ein einfaches WordPress-Plugin, das das React-Frontend mit PHP-Backend und "
+"Lokalisierung demonstriert."
 
 #. Author of the plugin
 #: my-react-localization-plugin.php
 msgid "Your Name"
-msgstr ""
+msgstr "Ihr Name"
 
 #: my-react-localization-plugin.php:19
 msgid "React Localization Example"
-msgstr ""
+msgstr "Beispiel für eine React-Lokalisierung"
 
 #: my-react-localization-plugin.php:66
 msgid "This is a static message from PHP backend!"
-msgstr ""
+msgstr "Dies ist eine statische Nachricht vom PHP-Backend!"
 
 #: my-react-localization-plugin.php:67
 msgid "This is a static message from React frontend!"
-msgstr ""
+msgstr "Dies ist eine statische Nachricht vom React-Frontend!"
 
 #: my-react-localization-plugin.php:68
 msgid "Hello Again"
-msgstr ""
+msgstr "Hallo nochmal"
 
 #: my-react-localization-plugin.php:69
 msgid "Hello Again and Again"
-msgstr ""
+msgstr "Hallo immer wieder"
 
-#: react-src/build/static/js/main.c937dffe.js:2
-#: react-src/src/App.js:16
+#: react-src/build/static/js/main.c937dffe.js:2 react-src/src/App.js:16
 #: react-src/build/static/js/main.c937dffe.js:18670
 msgid "Hello"
-msgstr ""
+msgstr "Hallo"

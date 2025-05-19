@@ -138,6 +138,16 @@ jobs:
       - name: Push changes to new branch
         run: git push origin ${{ steps.vars.outputs.BRANCH }}
 
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh -y
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh auth login --with-token < $GITHUB_TOKEN
+          gh pr create --title "Auto-translated files update" --body "This PR contains automatic translations of PO and JSON files." --base main --head ${{ steps.vars.outputs.BRANCH }}
+
       # - name: Create Pull Request
       #   uses: peter-evans/create-pull-request@v6
       #   with:

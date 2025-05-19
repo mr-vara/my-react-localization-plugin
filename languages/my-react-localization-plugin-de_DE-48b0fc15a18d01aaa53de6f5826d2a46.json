@@ -1,5 +1,5 @@
 {
-    "translation-revision-date": "2025-02-10 21:52+0530",
+    "translation-revision-date": "2025-02-11T13:31:26+00:00",
     "generator": "WP-CLI\/2.11.0",
     "source": "react-src\/src\/App.js",
     "domain": "messages",
@@ -7,8 +7,8 @@
         "messages": {
             "": {
                 "domain": "messages",
-                "lang": "fr",
-                "plural-forms": "nplurals=2; plural=(n > 1);"
+                "lang": "de",
+                "plural-forms": "nplurals=2; plural=(n != 1);"
             },
             "Hello": [
                 ""

@@ -32,6 +32,10 @@ jobs:
           git config user.email "${{ secrets.GIT_USER_EMAIL }}"
           git checkout -b ${{ steps.vars.outputs.BRANCH }}
 
+    - name: Install Python dependencies
+      run: |
+        pip install requests polib
+
       - name: Translate PO and JSON files
         env:
           TRANSLATOR_API_KEY: ${{ secrets.TRANSLATOR_API_KEY }}

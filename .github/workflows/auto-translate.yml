@@ -135,11 +135,14 @@ jobs:
           git add .
           git diff --cached --quiet || git commit -m "Auto-translated PO and JSON files"
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
-          branch: ${{ steps.vars.outputs.BRANCH }}
-          title: "🔁 Auto-translate PO and JSON files"
-          body: "This PR was automatically generated to translate newly added strings using Microsoft Translator API."
+      - name: Push changes to new branch
+        run: git push origin ${{ steps.vars.outputs.BRANCH }}
+
+      # - name: Create Pull Request
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     base: main
+      #     branch: ${{ steps.vars.outputs.BRANCH }}
+      #     title: "🔁 Auto-translate PO and JSON files"
+      #     body: "This PR was automatically generated to translate newly added strings using Microsoft Translator API."

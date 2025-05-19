@@ -36,6 +36,7 @@ jobs:
         env:
           TRANSLATOR_API_KEY: ${{ secrets.TRANSLATOR_API_KEY }}
         run: |
+          python <<EOF
           import os
           import json
           import re
@@ -116,7 +117,7 @@ jobs:
                       messages[key] = [translated.strip()]
                   with open(path, 'w', encoding='utf-8') as f:
                       json.dump(content, f, ensure_ascii=False, indent=2)
-
+          EOF
       - name: Commit changes
         run: |
           git add .

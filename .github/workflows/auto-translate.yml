@@ -135,9 +135,6 @@ jobs:
           git add .
           git diff --cached --quiet || git commit -m "Auto-translated PO and JSON files"
 
-      - name: Push changes to new branch
-        run: git push origin ${{ steps.vars.outputs.BRANCH }}
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:

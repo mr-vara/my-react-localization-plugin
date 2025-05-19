@@ -52,6 +52,8 @@ jobs:
           import polib
           from pathlib import Path
 
+          print("Translation started")
+
           def extract_lang_from_filename(filename):
               match = re.search(r'wp-plugin-bluehost-([a-z]{2,3}(?:_[A-Z]{2})?)', filename)
               if match:
@@ -72,6 +74,7 @@ jobs:
           # Translate .po files
           for path in Path('.').rglob('*.po'):
               lang = extract_lang_from_filename(path.name)
+              print(f"Language detected {lang}")
               if not lang:
                   continue
 

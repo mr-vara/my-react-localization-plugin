@@ -30,11 +30,11 @@ jobs:
         id: vars
         run: echo "BRANCH=auto/translated-$(date +%s)" >> $GITHUB_OUTPUT
 
-      - name: Create new branch
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b ${{ steps.vars.outputs.BRANCH }}
+      # - name: Create new branch
+      #   run: |
+      #     git config --global user.name "github-actions[bot]"
+      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      #     git checkout -b ${{ steps.vars.outputs.BRANCH }}
 
       - name: Install Python dependencies
         run: |
@@ -130,24 +130,26 @@ jobs:
                       json.dump(content, f, ensure_ascii=False, indent=2)
           EOF
 
-      - name: Commit changes
-        run: |
-          git add .
-          git diff --cached --quiet || git commit -m "Auto-translated PO and JSON files"
+      # - name: Commit changes
+      #   run: |
+      #     git add .
+      #     git diff --cached --quiet || git commit -m "Auto-translated PO and JSON files"
 
-      - name: Push changes to new branch
-        run: git push origin ${{ steps.vars.outputs.BRANCH }}
-
-      - name: Install GitHub CLI
-        run: sudo apt-get install gh -y
+      # - name: Push changes to new branch
+      #   run: git push origin ${{ steps.vars.outputs.BRANCH }}
 
       - name: Create Pull Request
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo $GITHUB_TOKEN | gh auth login --with-token
-          unset GITHUB_TOKEN
-          gh pr create --title "Auto-translated files update" --body "This PR contains automatic translations of PO and JSON files." --base main --head ${{ steps.vars.outputs.BRANCH }}
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Auto-translated PO and JSON files
+          branch: ${{ steps.vars.outputs.BRANCH }}
+          title: Auto-translated files update
+          body: |
+            This PR contains automatic translations of PO and JSON files.
+          labels: automated-pr
+
+
 
       # - name: Create Pull Request
       #   uses: peter-evans/create-pull-request@v6

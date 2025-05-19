@@ -32,8 +32,8 @@ jobs:
 
       - name: Create new branch
         run: |
-          git config user.name "${{ secrets.GIT_USER_NAME }}"
-          git config user.email "${{ secrets.GIT_USER_EMAIL }}"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.vars.outputs.BRANCH }}
 
       - name: Install Python dependencies
@@ -129,10 +129,7 @@ jobs:
                   with open(path, 'w', encoding='utf-8') as f:
                       json.dump(content, f, ensure_ascii=False, indent=2)
           EOF
-      - name: Debug Git status
-        run: |
-          git status
-          git diff
+
       - name: Commit changes
         run: |
           git add .

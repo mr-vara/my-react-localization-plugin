@@ -126,6 +126,10 @@ jobs:
                   with open(path, 'w', encoding='utf-8') as f:
                       json.dump(content, f, ensure_ascii=False, indent=2)
           EOF
+      - name: Debug Git status
+        run: |
+          git status
+          git diff
       - name: Commit changes
         run: |
           git add .
@@ -140,5 +144,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
           head: ${{ steps.vars.outputs.BRANCH }}
+          branch: auto/translated-${{ github.run_id }}
           title: "🔁 Auto-translate PO and JSON files"
           body: "This PR was automatically generated to translate newly added strings using Microsoft Translator API."

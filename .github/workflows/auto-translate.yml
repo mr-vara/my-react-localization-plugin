@@ -143,7 +143,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: ${{ steps.vars.outputs.BRANCH }}
-          branch: auto/translated-${{ github.run_id }}
+          branch: ${{ steps.vars.outputs.BRANCH }}
           title: "🔁 Auto-translate PO and JSON files"
           body: "This PR was automatically generated to translate newly added strings using Microsoft Translator API."

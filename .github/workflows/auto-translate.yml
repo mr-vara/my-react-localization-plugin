@@ -38,11 +38,18 @@ jobs:
         run: |
           import os
           import json
+          import re
           import requests
           import polib
           from pathlib import Path
 
-          def batch_translate(texts, to_lang="es-MX"):
+          def extract_lang_from_filename(filename):
+              match = re.search(r'wp-plugin-bluehost-([a-z]{2,3}(?:_[A-Z]{2})?)', filename)
+              if match:
+                  return match.group(1).replace('_', '-')
+              return None
+
+          def batch_translate(texts, to_lang):
               url = f"https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to={to_lang}"
               headers = {
                   "Ocp-Apim-Subscription-Key": os.environ["TRANSLATOR_API_KEY"],
@@ -53,8 +60,12 @@ jobs:
               response.raise_for_status()
               return [item["translations"][0]["text"] for item in response.json()]
 
-          # Translate .po files (with context)
+          # Translate .po files
           for path in Path('.').rglob('*.po'):
+              lang = extract_lang_from_filename(path.name)
+              if not lang:
+                  continue
+
               po = polib.pofile(str(path))
               entries_to_translate = [
                   entry for entry in po
@@ -73,7 +84,7 @@ jobs:
                   texts.append(composed)
 
               if texts:
-                  translated_texts = batch_translate(texts)
+                  translated_texts = batch_translate(texts, lang)
                   for (entry, original_len), translated in zip(entry_map, translated_texts):
                       if original_len:
                           entry.msgstr = translated[:original_len].strip()
@@ -83,6 +94,10 @@ jobs:
 
           # Translate .json files
           for path in Path('.').rglob('*.json'):
+              lang = extract_lang_from_filename(path.name)
+              if not lang:
+                  continue
+
               with open(path, 'r', encoding='utf-8') as f:
                   try:
                       content = json.load(f)
@@ -96,7 +111,7 @@ jobs:
               keys_to_translate = [key for key, val in messages.items() if key != "" and isinstance(val, list) and not val[0].strip()]
 
               if keys_to_translate:
-                  translated_texts = batch_translate(keys_to_translate)
+                  translated_texts = batch_translate(keys_to_translate, lang)
                   for key, translated in zip(keys_to_translate, translated_texts):
                       messages[key] = [translated.strip()]
                   with open(path, 'w', encoding='utf-8') as f:

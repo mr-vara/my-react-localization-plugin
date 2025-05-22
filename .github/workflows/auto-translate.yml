@@ -11,152 +11,152 @@ permissions:
   pull-requests: write
 
 jobs:
-  auto-translate:
-    runs-on: ubuntu-latest
+  # auto-translate:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: '3.x'
 
-      - name: Install dependencies
-        run: pip install polib
+  #     - name: Install dependencies
+  #       run: pip install polib
 
-      - name: Set branch name
-        id: vars
-        run: echo "BRANCH=auto/translated-$(date +%s)" >> $GITHUB_OUTPUT
+  #     - name: Set branch name
+  #       id: vars
+  #       run: echo "BRANCH=auto/translated-$(date +%s)" >> $GITHUB_OUTPUT
 
-      - name: Install Python dependencies
-        run: |
-          pip install requests polib
+  #     - name: Install Python dependencies
+  #       run: |
+  #         pip install requests polib
 
-      - name: Translate PO and JSON files
-        env:
-          TRANSLATOR_API_KEY: ${{ secrets.TRANSLATOR_API_KEY }}
-        run: |
-          python <<EOF
-          import os
-          import json
-          import re
-          import requests
-          import polib
-          from pathlib import Path
+  #     - name: Translate PO and JSON files
+  #       env:
+  #         TRANSLATOR_API_KEY: ${{ secrets.TRANSLATOR_API_KEY }}
+  #       run: |
+  #         python <<EOF
+  #         import os
+  #         import json
+  #         import re
+  #         import requests
+  #         import polib
+  #         from pathlib import Path
 
-          print("Translation started")
+  #         print("Translation started")
 
-          def extract_lang_from_filename(filename):
-              match = re.search(r'my-react-localization-plugin-([a-z]{2,3}(?:_[A-Z]{2})?)', filename)
-              if match:
-                  return match.group(1).replace('_', '-')
-              return None
+  #         def extract_lang_from_filename(filename):
+  #             match = re.search(r'my-react-localization-plugin-([a-z]{2,3}(?:_[A-Z]{2})?)', filename)
+  #             if match:
+  #                 return match.group(1).replace('_', '-')
+  #             return None
 
-          def batch_translate(texts, to_lang):
-              url = f"https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to={to_lang}"
-              headers = {
-                  "Ocp-Apim-Subscription-Key": os.environ["TRANSLATOR_API_KEY"],
-                  "Content-Type": "application/json"
-              }
-              payload = [{"Text": text} for text in texts]
-              response = requests.post(url, headers=headers, json=payload)
-              response.raise_for_status()
-              return [item["translations"][0]["text"] for item in response.json()]
+  #         def batch_translate(texts, to_lang):
+  #             url = f"https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to={to_lang}"
+  #             headers = {
+  #                 "Ocp-Apim-Subscription-Key": os.environ["TRANSLATOR_API_KEY"],
+  #                 "Content-Type": "application/json"
+  #             }
+  #             payload = [{"Text": text} for text in texts]
+  #             response = requests.post(url, headers=headers, json=payload)
+  #             response.raise_for_status()
+  #             return [item["translations"][0]["text"] for item in response.json()]
 
-          # Translate .po files
-          for path in Path('.').rglob('*.po'):
-              lang = extract_lang_from_filename(path.name)
-              print(f"Language detected {lang}")
-              if not lang:
-                  continue
+  #         # Translate .po files
+  #         for path in Path('.').rglob('*.po'):
+  #             lang = extract_lang_from_filename(path.name)
+  #             print(f"Language detected {lang}")
+  #             if not lang:
+  #                 continue
 
-              po = polib.pofile(str(path))
-              entries_to_translate = [
-                  entry for entry in po
-                  if not entry.msgstr.strip() and entry.msgid.strip()
-              ]
+  #             po = polib.pofile(str(path))
+  #             entries_to_translate = [
+  #                 entry for entry in po
+  #                 if not entry.msgstr.strip() and entry.msgid.strip()
+  #             ]
 
-              texts = []
-              entry_map = []
-              for entry in entries_to_translate:
-                  if entry.msgctxt:
-                      composed = f"{entry.msgid} ({entry.msgctxt})"
-                      entry_map.append((entry, True))
-                  else:
-                      composed = entry.msgid
-                      entry_map.append((entry, False))
-                  texts.append(composed)
+  #             texts = []
+  #             entry_map = []
+  #             for entry in entries_to_translate:
+  #                 if entry.msgctxt:
+  #                     composed = f"{entry.msgid} ({entry.msgctxt})"
+  #                     entry_map.append((entry, True))
+  #                 else:
+  #                     composed = entry.msgid
+  #                     entry_map.append((entry, False))
+  #                 texts.append(composed)
 
-              if texts:
-                  translated_texts = batch_translate(texts, lang)
-                  for (entry, had_context), translated in zip(entry_map, translated_texts):
-                      if had_context:
-                          translated = re.sub(r'\s*\([^()]*\)$', '', translated).strip()
-                      entry.msgstr = translated.strip()
-                  po.save()
+  #             if texts:
+  #                 translated_texts = batch_translate(texts, lang)
+  #                 for (entry, had_context), translated in zip(entry_map, translated_texts):
+  #                     if had_context:
+  #                         translated = re.sub(r'\s*\([^()]*\)$', '', translated).strip()
+  #                     entry.msgstr = translated.strip()
+  #                 po.save()
 
-          # Translate .json files
-          CONTEXT_SEPARATORS = ["|", "\u0004"]
+  #         # Translate .json files
+  #         CONTEXT_SEPARATORS = ["|", "\u0004"]
 
-          def split_context_key(key):
-              for sep in CONTEXT_SEPARATORS:
-                  if sep in key:
-                      return key.split(sep, 1)[0], key.split(sep, 1)[1], sep
-              return None, key, None
+  #         def split_context_key(key):
+  #             for sep in CONTEXT_SEPARATORS:
+  #                 if sep in key:
+  #                     return key.split(sep, 1)[0], key.split(sep, 1)[1], sep
+  #             return None, key, None
 
-          for path in Path('.').rglob('*.json'):
-              lang = extract_lang_from_filename(path.name)
-              if not lang:
-                  continue
+  #         for path in Path('.').rglob('*.json'):
+  #             lang = extract_lang_from_filename(path.name)
+  #             if not lang:
+  #                 continue
 
-              with open(path, 'r', encoding='utf-8') as f:
-                  try:
-                      content = json.load(f)
-                  except json.JSONDecodeError:
-                      continue
+  #             with open(path, 'r', encoding='utf-8') as f:
+  #                 try:
+  #                     content = json.load(f)
+  #                 except json.JSONDecodeError:
+  #                     continue
 
-              if "locale_data" not in content or "messages" not in content["locale_data"]:
-                  continue
+  #             if "locale_data" not in content or "messages" not in content["locale_data"]:
+  #                 continue
 
-              messages = content["locale_data"]["messages"]
-              keys_to_translate = []
-              key_info_map = {}
+  #             messages = content["locale_data"]["messages"]
+  #             keys_to_translate = []
+  #             key_info_map = {}
 
-              for key, val in messages.items():
-                  if key == "" or not isinstance(val, list) or val[0].strip():
-                      continue
+  #             for key, val in messages.items():
+  #                 if key == "" or not isinstance(val, list) or val[0].strip():
+  #                     continue
 
-                  context, msgid, sep = split_context_key(key)
-                  if context:
-                      composed = f"{msgid} ({context})"
-                      key_info_map[key] = (msgid, context, sep)
-                  else:
-                      composed = msgid
-                      key_info_map[key] = (msgid, None, None)
+  #                 context, msgid, sep = split_context_key(key)
+  #                 if context:
+  #                     composed = f"{msgid} ({context})"
+  #                     key_info_map[key] = (msgid, context, sep)
+  #                 else:
+  #                     composed = msgid
+  #                     key_info_map[key] = (msgid, None, None)
 
-                  keys_to_translate.append(composed)
+  #                 keys_to_translate.append(composed)
 
-              if keys_to_translate:
-                  translated_texts = batch_translate(keys_to_translate, lang)
-                  for key, translated in zip(key_info_map.keys(), translated_texts):
-                      _, had_context, _ = key_info_map[key]
-                      if had_context:
-                        translated = re.sub(r'\s*\(.*\)$', '', translated).strip()
-                      messages[key] = [translated.strip()]
+  #             if keys_to_translate:
+  #                 translated_texts = batch_translate(keys_to_translate, lang)
+  #                 for key, translated in zip(key_info_map.keys(), translated_texts):
+  #                     _, had_context, _ = key_info_map[key]
+  #                     if had_context:
+  #                       translated = re.sub(r'\s*\(.*\)$', '', translated).strip()
+  #                     messages[key] = [translated.strip()]
 
-                  with open(path, 'w', encoding='utf-8') as f:
-                      json.dump(content, f, ensure_ascii=False, indent=2)
-          EOF
+  #                 with open(path, 'w', encoding='utf-8') as f:
+  #                     json.dump(content, f, ensure_ascii=False, indent=2)
+  #         EOF
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          commit-message: Auto-translated PO and JSON files
-          branch: ${{ steps.vars.outputs.BRANCH }}
-          title: Auto-translated files update
-          body: |
-            This PR contains automatic translations of PO and JSON files.
-          labels: automated-pr
+  #     - name: Create Pull Request
+  #       uses: peter-evans/create-pull-request@v5
+  #       with:
+  #         token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+  #         commit-message: Auto-translated PO and JSON files
+  #         branch: ${{ steps.vars.outputs.BRANCH }}
+  #         title: Auto-translated files update
+  #         body: |
+  #           This PR contains automatic translations of PO and JSON files.
+  #         labels: automated-pr

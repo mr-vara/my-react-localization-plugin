@@ -33,16 +33,8 @@ msgstr ""
 msgid "React Localization Example"
 msgstr ""
 
-#: my-react-localization-plugin.php:66
-msgid "This is a static message from PHP backend!"
-msgstr ""
-
 #: my-react-localization-plugin.php:67
 msgid "This is a static message from React frontend!"
-msgstr ""
-
-#: my-react-localization-plugin.php:68
-msgid "Hello Again"
 msgstr ""
 
 #: my-react-localization-plugin.php:69
@@ -53,4 +45,24 @@ msgstr ""
 #: react-src/src/App.js:16
 #: react-src/build/static/js/main.c937dffe.js:18670
 msgid "Hello"
+msgstr ""
+
+#: my-react-localization-plugin.php:66
+msgctxt "Some context about the string"
+msgid "This is a static message from PHP backend!"
+msgstr ""
+
+#: react-src/src/App.js:18
+msgctxt "some context with x"
+msgid "Hello with x"
+msgstr ""
+
+#: react-src/src/App.js:19
+msgctxt "some context with x1"
+msgid "Hello with x1"
+msgstr ""
+
+#: react-src/src/App.js:20
+msgctxt "some context with x2"
+msgid "Hello with x2"
 msgstr ""

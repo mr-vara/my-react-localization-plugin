@@ -30,12 +30,6 @@ jobs:
         id: vars
         run: echo "BRANCH=auto/translated-$(date +%s)" >> $GITHUB_OUTPUT
 
-      # - name: Create new branch
-      #   run: |
-      #     git config --global user.name "github-actions[bot]"
-      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      #     git checkout -b ${{ steps.vars.outputs.BRANCH }}
-
       - name: Install Python dependencies
         run: |
           pip install requests polib
@@ -120,23 +114,31 @@ jobs:
                   continue
 
               messages = content["locale_data"]["messages"]
-              keys_to_translate = [key for key, val in messages.items() if key != "" and isinstance(val, list) and not val[0].strip()]
+              keys_to_translate = []
+
+              # Map key -> (original msgid, context or None)
+              key_info_map = {}
+
+              for key, val in messages.items():
+                  if key == "" or not isinstance(val, list) or val[0].strip():
+                      continue
+                  if "|" in key:
+                      context, msgid = key.split("|", 1)
+                      composed = f"{msgid} ({context})"
+                      key_info_map[key] = (msgid, context)
+                  else:
+                      composed = key
+                      key_info_map[key] = (key, None)
+                  keys_to_translate.append(composed)
 
               if keys_to_translate:
                   translated_texts = batch_translate(keys_to_translate, lang)
-                  for key, translated in zip(keys_to_translate, translated_texts):
+                  for key, translated in zip(key_info_map.keys(), translated_texts):
+                      # We just use the translated string without the appended context
                       messages[key] = [translated.strip()]
                   with open(path, 'w', encoding='utf-8') as f:
                       json.dump(content, f, ensure_ascii=False, indent=2)
           EOF
-
-      # - name: Commit changes
-      #   run: |
-      #     git add .
-      #     git diff --cached --quiet || git commit -m "Auto-translated PO and JSON files"
-
-      # - name: Push changes to new branch
-      #   run: git push origin ${{ steps.vars.outputs.BRANCH }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
@@ -148,14 +150,3 @@ jobs:
           body: |
             This PR contains automatic translations of PO and JSON files.
           labels: automated-pr
-
-
-
-      # - name: Create Pull Request
-      #   uses: peter-evans/create-pull-request@v6
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     base: main
-      #     branch: ${{ steps.vars.outputs.BRANCH }}
-      #     title: "🔁 Auto-translate PO and JSON files"
-      #     body: "This PR was automatically generated to translate newly added strings using Microsoft Translator API."

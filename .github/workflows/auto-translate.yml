@@ -83,19 +83,18 @@ jobs:
               for entry in entries_to_translate:
                   if entry.msgctxt:
                       composed = f"{entry.msgid} ({entry.msgctxt})"
-                      entry_map.append((entry, len(entry.msgid)))
+                      entry_map.append((entry, True))
                   else:
                       composed = entry.msgid
-                      entry_map.append((entry, None))
+                      entry_map.append((entry, False))
                   texts.append(composed)
 
               if texts:
                   translated_texts = batch_translate(texts, lang)
-                  for (entry, original_len), translated in zip(entry_map, translated_texts):
-                      if original_len:
-                          entry.msgstr = translated[:original_len].strip()
-                      else:
-                          entry.msgstr = translated.strip()
+                  for (entry, had_context), translated in zip(entry_map, translated_texts):
+                      if had_context:
+                          translated = re.sub(r'\s*\([^()]*\)$', '', translated).strip()
+                      entry.msgstr = translated.strip()
                   po.save()
 
           # Translate .json files
@@ -142,7 +141,9 @@ jobs:
               if keys_to_translate:
                   translated_texts = batch_translate(keys_to_translate, lang)
                   for key, translated in zip(key_info_map.keys(), translated_texts):
-                      translated = re.sub(r'\s*\(.*\)$', '', translated).strip()
+                      _, had_context = key_info_map[key]
+                      if had_context:
+                        translated = re.sub(r'\s*\(.*\)$', '', translated).strip()
                       messages[key] = [translated.strip()]
 
                   with open(path, 'w', encoding='utf-8') as f:

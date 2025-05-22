@@ -141,7 +141,7 @@ jobs:
               if keys_to_translate:
                   translated_texts = batch_translate(keys_to_translate, lang)
                   for key, translated in zip(key_info_map.keys(), translated_texts):
-                      _, had_context = key_info_map[key]
+                      _, had_context, _ = key_info_map[key]
                       if had_context:
                         translated = re.sub(r'\s*\(.*\)$', '', translated).strip()
                       messages[key] = [translated.strip()]

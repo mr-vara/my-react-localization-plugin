@@ -21,6 +21,9 @@
             ],
             "some context with x2\u0004Hello with x2": [
                 ""
+            ],
+            "Some context about the string\u0004This is a static message from PHP backend!": [
+                ""
             ]
         }
     }

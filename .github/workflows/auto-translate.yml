@@ -99,6 +99,14 @@ jobs:
                   po.save()
 
           # Translate .json files
+          CONTEXT_SEPARATORS = ["|", "\u0004"]
+
+          def split_context_key(key):
+              for sep in CONTEXT_SEPARATORS:
+                  if sep in key:
+                      return key.split(sep, 1)[0], key.split(sep, 1)[1], sep
+              return None, key, None
+
           for path in Path('.').rglob('*.json'):
               lang = extract_lang_from_filename(path.name)
               if not lang:
@@ -115,27 +123,29 @@ jobs:
 
               messages = content["locale_data"]["messages"]
               keys_to_translate = []
-
-              # Map key -> (original msgid, context or None)
               key_info_map = {}
 
               for key, val in messages.items():
                   if key == "" or not isinstance(val, list) or val[0].strip():
                       continue
-                  if "|" in key:
-                      context, msgid = key.split("|", 1)
+
+                  context, msgid, sep = split_context_key(key)
+                  if context:
                       composed = f"{msgid} ({context})"
-                      key_info_map[key] = (msgid, context)
+                      key_info_map[key] = (msgid, context, sep)
                   else:
-                      composed = key
-                      key_info_map[key] = (key, None)
+                      composed = msgid
+                      key_info_map[key] = (msgid, None, None)
+
                   keys_to_translate.append(composed)
 
               if keys_to_translate:
                   translated_texts = batch_translate(keys_to_translate, lang)
                   for key, translated in zip(key_info_map.keys(), translated_texts):
-                      # We just use the translated string without the appended context
+                      # Optional: remove context from final translation
+                      # translated = re.sub(r'\s*\(.*\)$', '', translated).strip()
                       messages[key] = [translated.strip()]
+
                   with open(path, 'w', encoding='utf-8') as f:
                       json.dump(content, f, ensure_ascii=False, indent=2)
           EOF

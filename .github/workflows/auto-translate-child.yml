@@ -19,7 +19,7 @@ jobs:
   translate:
     uses: mr-vara/workflows/.github/workflows/auto-translate.yml@main
     with:
-      text_domain: ${{ github.event.inputs.text_domain }}
+      text_domain: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.text_domain || 'my-react-localization-plugin' }}
     secrets:
       TRANSLATOR_API_KEY: ${{ secrets.TRANSLATOR_API_KEY }}
       PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

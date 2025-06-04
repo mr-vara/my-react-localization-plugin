@@ -1,18 +1,18 @@
 {
-    "translation-revision-date": "2025-02-10 21:52+0530",
-    "generator": "WP-CLI\/2.11.0",
-    "source": "react-src\/build\/static\/js\/main.c937dffe.js",
-    "domain": "messages",
-    "locale_data": {
-        "messages": {
-            "": {
-                "domain": "messages",
-                "lang": "fr",
-                "plural-forms": "nplurals=2; plural=(n > 1);"
-            },
-            "Hello": [
-                ""
-            ]
-        }
+  "translation-revision-date": "2025-02-10 21:52+0530",
+  "generator": "WP-CLI/2.11.0",
+  "source": "react-src/build/static/js/main.c937dffe.js",
+  "domain": "messages",
+  "locale_data": {
+    "messages": {
+      "": {
+        "domain": "messages",
+        "lang": "fr",
+        "plural-forms": "nplurals=2; plural=(n > 1);"
+      },
+      "Hello": [
+        "Bonjour"
+      ]
     }
+  }
 }

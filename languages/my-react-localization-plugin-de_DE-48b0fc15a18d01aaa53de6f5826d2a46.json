@@ -1,30 +1,30 @@
 {
-    "translation-revision-date": "2025-02-11T13:31:26+00:00",
-    "generator": "WP-CLI\/2.11.0",
-    "source": "react-src\/src\/App.js",
-    "domain": "messages",
-    "locale_data": {
-        "messages": {
-            "": {
-                "domain": "messages",
-                "lang": "de",
-                "plural-forms": "nplurals=2; plural=(n != 1);"
-            },
-            "Hello": [
-                ""
-            ],
-            "some context with x\u0004Hello with x": [
-                ""
-            ],
-            "some context with x1\u0004Hello with x1": [
-                ""
-            ],
-            "some context with x2\u0004Hello with x2": [
-                ""
-            ],
-            "Some context about the string\u0004This is a static message from PHP backend!": [
-                ""
-            ]
-        }
+  "translation-revision-date": "2025-02-11T13:31:26+00:00",
+  "generator": "WP-CLI/2.11.0",
+  "source": "react-src/src/App.js",
+  "domain": "messages",
+  "locale_data": {
+    "messages": {
+      "": {
+        "domain": "messages",
+        "lang": "de",
+        "plural-forms": "nplurals=2; plural=(n != 1);"
+      },
+      "Hello": [
+        "Hallo"
+      ],
+      "some context with x\u0004Hello with x": [
+        "Hallo mit x"
+      ],
+      "some context with x1\u0004Hello with x1": [
+        "Hallo mit x1"
+      ],
+      "some context with x2\u0004Hello with x2": [
+        "Hallo mit x2"
+      ],
+      "Some context about the string\u0004This is a static message from PHP backend!": [
+        "Dies ist eine statische Nachricht vom PHP-Backend!"
+      ]
     }
+  }
 }

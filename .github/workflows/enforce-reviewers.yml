@@ -17,14 +17,12 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { context, github, core } = require('@actions/github');
-
             const pr = context.payload.pull_request;
             const reviewers = pr.requested_reviewers || [];
             const teamReviewers = pr.requested_teams || [];
 
             if (reviewers.length === 0 && teamReviewers.length === 0) {
-              // Convert PR to draft mode
+              // Convert PR to draft
               await github.rest.pulls.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -32,7 +30,7 @@ jobs:
                 draft: true
               });
 
-              core.setFailed("❌ PR has no reviewers. It has been converted to draft. Please assign at least one reviewer.");
+              core.setFailed("❌ PR has no reviewers. It has been moved to draft. Please assign at least one reviewer.");
             } else {
-              console.log("✅ Reviewers are assigned.");
+              console.log("✅ Reviewers are assigned. Proceeding.");
             }

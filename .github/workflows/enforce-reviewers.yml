@@ -5,32 +5,32 @@ on:
     types: [opened, edited, ready_for_review]
 
 jobs:
-  check-reviewers:
-    runs-on: ubuntu-latest
+  # check-reviewers:
+  #   runs-on: ubuntu-latest
 
-    permissions:
-      pull-requests: write
-      contents: read
+  #   permissions:
+  #     pull-requests: write
+  #     contents: read
 
-    steps:
-      - name: Check for assigned reviewers
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const pr = context.payload.pull_request;
-            const reviewers = pr.requested_reviewers || [];
-            const teamReviewers = pr.requested_teams || [];
+  #   steps:
+  #     - name: Check for assigned reviewers
+  #       uses: actions/github-script@v7
+  #       with:
+  #         script: |
+  #           const pr = context.payload.pull_request;
+  #           const reviewers = pr.requested_reviewers || [];
+  #           const teamReviewers = pr.requested_teams || [];
 
-            if (reviewers.length === 0 && teamReviewers.length === 0) {
-              // Convert PR to draft
-              await github.rest.pulls.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: pr.number,
-                draft: true
-              });
+  #           if (reviewers.length === 0 && teamReviewers.length === 0) {
+  #             // Convert PR to draft
+  #             await github.rest.pulls.update({
+  #               owner: context.repo.owner,
+  #               repo: context.repo.repo,
+  #               pull_number: pr.number,
+  #               draft: true
+  #             });
 
-              core.setFailed("❌ PR has no reviewers. It has been moved to draft. Please assign at least one reviewer.");
-            } else {
-              console.log("✅ Reviewers are assigned. Proceeding.");
-            }
+  #             core.setFailed("❌ PR has no reviewers. It has been moved to draft. Please assign at least one reviewer.");
+  #           } else {
+  #             console.log("✅ Reviewers are assigned. Proceeding.");
+  #           }

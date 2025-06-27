@@ -19,4 +19,4 @@ jobs:
       text_domain: 'my-react-localization-plugin'
     secrets:
       TRANSLATOR_API_KEY: ${{ secrets.TRANSLATOR_API_KEY }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NEWFOLD_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
